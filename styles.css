@@ -38,17 +38,57 @@ h1{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 16px;
+    max-width: 60vw;
+    margin: 0 auto;
+    padding: 20px 10px;
+
 }
-.item{
+/* Add these styles to your existing CSS file (styles.css) */
+
+.item {
     display: flex;
     flex-direction: column;
+    gap: 10px;
+    padding: 1px;
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    width: 250px; /* Fixed width for consistency */
 }
-.item__image{
+
+.item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.item__image img {
     width: 100%;
-    max-width: 300px;
+    height: 200px; /* Fixed height for images */
     object-fit: cover;
+    border-radius: 8px;
 }
+
 .item__info {
-    
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.item__category {
+    font-size: 0.875rem;
+    color: var(--Rose500);
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.item__name {
+    font-size: 1.125rem;
+    color: var(--Rose900);
+    font-weight: 700;
+}
+
+.item__price {
+    font-size: 1rem;
+    color: var(--Green);
+    font-weight: 600;
 }
