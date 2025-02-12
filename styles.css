@@ -47,7 +47,6 @@ h1{
 .item {
     display: flex;
     flex-direction: column;
-    gap: 10px;
     padding: 1px;
     border-radius: 12px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -65,7 +64,92 @@ h1{
     object-fit: cover;
     border-radius: 8px;
 }
+.addcart{
+    width: 55%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin:0 auto ;
+    position: relative;
+    top: -1.5rem;   
+    padding: 0.5rem 1rem;
+    border-radius: 1.5rem;
+    font-weight:bold;
+    border: 1px solid hsla(0, 0%, 0%,0.2);
+    background-color: var(--Rose50);
+}
+.addcart:hover{
+    border: 1px solid var(--Red);
+    color: var(--Red);
+    cursor: pointer;
+}
+.addcart img{
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-right: 0.5rem;
+}
+.added {
+    width: 55%; /* Use auto instead of fixed percentage */
+    height: 15%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    position: relative;
+    top: -1.5rem;
+    padding: 0.5rem;
+    border-radius: 1.5rem;
+    font-weight: bold;
+    border: 1px solid hsla(0, 0%, 0%, 0.2);
+    background-color: var(--Red); /* Changed to match the design */
+}
 
+.minus {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.2rem;
+    border-radius: 50%;
+    border: 1px solid var(--Rose50);
+    cursor: pointer;
+}
+
+.minus img {
+    width: 100%;
+    max-height: 0.25rem; /* Adjusted for better visibility */
+}
+
+.plus {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.2rem;
+    border-radius: 50%;
+    border: 1px solid var(--Rose50);
+    cursor: pointer;
+}
+.plus img {
+    width: 1rem;
+    height: 1rem;
+    
+}
+.plus:hover, .minus:hover {
+    background-color: var(--Rose50);
+}
+.plus:hover img, .minus:hover img {
+    filter: brightness(0) saturate(100%) invert(16%) sepia(99%) saturate(7405%) hue-rotate(359deg) brightness(99%) contrast(118%);
+}
+.quantity {
+    font-size: 1rem;
+    margin: 0 0.5rem;
+    color: var(--Rose50);
+}
 .item__info {
     display: flex;
     flex-direction: column;
