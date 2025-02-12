@@ -44,8 +44,6 @@ h1{
     padding: 20px 10px;
 
 }
-/* Add these styles to your existing CSS file (styles.css) */
-
 .item {
     display: flex;
     flex-direction: column;
@@ -89,6 +87,32 @@ h1{
 
 .item__price {
     font-size: 1rem;
-    color: var(--Green);
+    color: var(--Red);
     font-weight: 600;
 }
+.cart{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: var(--Rose50);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    margin: 0 auto;
+    width: 400px;
+    height:min-content;
+}
+.cart h1{
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--Red);
+    margin-bottom: 1rem;
+}
+.cart-empty{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
