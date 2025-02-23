@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
+    let dessertNumber = document.querySelector(".DessertsNumbers");
+    let howMany = document.querySelector(".howMany");
+    var NumbersOfCart = 0;
+    var totalNumber = 0;
     fetch("data.json")
         .then(response => response.json())
         .then(data => {
@@ -7,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             data.forEach((dessert, index) => {
                 const itemHTML = `
-                    <div class="item" data-name="${dessert.name}"> <!-- Add data-name attribute -->
+                    <div class="item" data-name="${dessert.name}">
                         <div class="item__image">
                             <img src="${dessert.image.desktop}" alt="${dessert.name}">
                         </div>
@@ -21,7 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 itemsContainer.innerHTML += itemHTML;
             });
 
-            // Add "Add to Cart" button to each item
             const itemImages = document.querySelectorAll('.item__image');
             itemImages.forEach((item, index) => {
                 const addCart = document.createElement('button');
@@ -34,18 +37,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 addCart.appendChild(addIcon);
                 addCart.appendChild(addCartText);
 
-                // Append the button to the current item's image container
                 item.appendChild(addCart);
 
-                // Add click event to the "Add to Cart" button
                 addCart.addEventListener('click', () => {
-                    // Hide the "Add to Cart" button
-                    addCart.style.display = 'none';
+                    NumbersOfCart++;
+                    howMany.textContent = NumbersOfCart;
+                    dessertNumber.style.display = "inline-block";
 
-                    // Check if the quantity controls already exist
+                    addCart.style.display = 'none';
                     let added = item.querySelector('.added');
                     if (!added) {
-                        // Create quantity controls
                         added = document.createElement('div');
                         added.setAttribute('class', 'added');
 
@@ -57,29 +58,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         const quantity = document.createElement('span');
                         quantity.setAttribute('class', 'quantity');
-                        quantity.textContent = 1; // Default quantity
+                        quantity.textContent = 1;
 
                         const maxcircle = document.createElement('div');
                         const plusIcon = document.createElement('img');
                         plusIcon.setAttribute('src', './assets/images/icon-increment-quantity.svg');
                         maxcircle.setAttribute('class', 'plus');
 
-                        // Append elements
                         mincircle.appendChild(minIcon);
                         maxcircle.appendChild(plusIcon);
                         added.appendChild(mincircle);
                         added.appendChild(quantity);
                         added.appendChild(maxcircle);
 
-                        // Append quantity controls to the item
                         item.appendChild(added);
 
-                        // Add event listeners for quantity buttons
                         mincircle.addEventListener('click', () => {
                             let currentQuantity = parseInt(quantity.textContent);
                             if (currentQuantity > 1) {
                                 quantity.textContent = currentQuantity - 1;
                                 updateCartItem(data[index], currentQuantity - 1);
+                                NumbersOfCart--;
+                                howMany.textContent = NumbersOfCart;
+                            } else {
+                                // If quantity is reduced to 0, remove the item from the cart
+                                NumbersOfCart--;
+                                howMany.textContent = NumbersOfCart;
+
+                                const cartItem = document.querySelector(`.cart-item[data-name="${data[index].name}"]`);
+                                if (cartItem) cartItem.remove();
+
+                                addCart.style.display = "block";
+                                added.remove();
+
+                                if (NumbersOfCart === 0) {
+                                    dessertNumber.style.display = "none";
+                                    document.querySelector('.cart-empty').style.display = 'flex';
+                                    document.querySelector('.TotalPrice').style.display = 'none';
+                                }
                             }
                         });
 
@@ -87,22 +103,25 @@ document.addEventListener("DOMContentLoaded", () => {
                             let currentQuantity = parseInt(quantity.textContent);
                             quantity.textContent = currentQuantity + 1;
                             updateCartItem(data[index], currentQuantity + 1);
+                            NumbersOfCart++;
+                            howMany.textContent = NumbersOfCart;
                         });
                     }
-
-                    // Add the item to the cart
-                    addToCart(data[index], 1, item); // Pass the product item
+                    document.querySelector('.TotalPrice').style.display = 'block';
+                    addToCart(data[index], 1, item, howMany.textContent);
                 });
             });
         })
         .catch(error => console.error("Error fetching data:", error));
 });
 
-function addToCart(dessert, quantity, item) {
+function addToCart(dessert, quantity, item, CartNumbers) {
     const yourcart = document.querySelector('.your-cart');
     const cartempty = document.querySelector('.cart-empty');
+    const dessertNumber = document.querySelector(".DessertsNumbers");
+    const howMany = document.querySelector(".howMany");
 
-    cartempty.style.display = 'none'; // Hide "empty cart" message
+    cartempty.style.display = 'none';
 
     let isItemExist = document.querySelector(`.cart-item[data-name="${dessert.name}"]`);
     if (isItemExist) {
@@ -112,43 +131,54 @@ function addToCart(dessert, quantity, item) {
 
         quantityItem.innerText = `x${newQuantity}`;
         totalItem.innerText = `$${(newQuantity * dessert.price).toFixed(2)}`;
+        updateTotalNumber();
         return;
     }
 
-    // Create new cart item
     const cartItem = document.createElement('div');
     cartItem.classList.add('cart-item');
     cartItem.setAttribute('data-name', dessert.name);
     cartItem.innerHTML = `
-        <span class="cart-item__name">${dessert.name}</span>
-        <span class="cart-item__quantity">x${quantity}</span>
-        <span class="cart-item__price">$${dessert.price.toFixed(2)}</span>
-        <span class="cart-item__total">$${(quantity * dessert.price).toFixed(2)}</span>
+        <div class="cart-details">
+            <span class="cart-item__name">${dessert.name}</span>
+            <div class="item-detail">
+                <span class="cart-item__quantity">x${quantity}</span>
+                <span class="cart-item__price">$${dessert.price.toFixed(2)}</span>
+                <span class="cart-item__total">$${(quantity * dessert.price).toFixed(2)}</span>
+            </div>
+        </div>
         <div class="cart-delete">
             <img src="./assets/images/icon-remove-item.svg" alt="Remove item">
         </div>
     `;
 
-    // Event listener to remove item
     cartItem.querySelector('.cart-delete').addEventListener('click', () => {
+        let quantityToRemove = parseInt(cartItem.querySelector('.cart-item__quantity').innerText.replace('x', ''));
+        NumbersOfCart -= quantityToRemove;
+        howMany.textContent = NumbersOfCart;
+
         yourcart.removeChild(cartItem);
 
-        // Reset the product item's state
         const productItem = document.querySelector(`.item[data-name="${dessert.name}"]`);
         if (productItem) {
             const addCart = productItem.querySelector('.addcart');
             const added = productItem.querySelector('.added');
 
-            if (addCart) addCart.style.display = 'block'; // Show "Add to cart" button
-            if (added) added.remove(); // Remove the quantity controls
+            if (addCart) addCart.style.display = 'block';
+            if (added) added.remove();
         }
 
-        if (yourcart.children.length === 1) {
-            cartempty.style.display = 'flex'; // Show "empty cart" message again
+        if (yourcart.children.length === 0) {
+            cartempty.style.display = 'flex';
+            dessertNumber.style.display = 'none';
+            NumbersOfCart = 0;
         }
+
+        updateTotalNumber();
     });
 
     yourcart.appendChild(cartItem);
+    updateTotalNumber();
 }
 
 function updateCartItem(dessert, quantity) {
@@ -160,4 +190,41 @@ function updateCartItem(dessert, quantity) {
             cartItem.querySelector('.cart-item__total').textContent = `$${(quantity * dessert.price).toFixed(2)}`;
         }
     });
+    updateTotalNumber();
+}
+
+function updateTotalNumber() {
+    const cartItems = document.querySelectorAll('.cart-item');
+    totalNumber = 0;
+    cartItems.forEach(cartItem => {
+        const itemTotal = parseFloat(cartItem.querySelector('.cart-item__total').textContent.replace('$', ''));
+        totalNumber += itemTotal;
+    });
+
+    let cartTotal = document.querySelector('.cartTotal');
+    if (!cartTotal) {
+        cartTotal = document.createElement('div');
+        cartTotal.classList.add('cartTotal');
+        document.querySelector('.TotalPrice').appendChild(cartTotal);
+
+        let carNeut = document.createElement('span');
+        carNeut.classList.add('carNeut');
+        carNeut.innerHTML = `
+            <img src="/product list with cart/assets/images/icon-carbon-neutral.svg" alt ="carbon-neutral">
+            <span>&nbsp;This is a <strong>carbon-neutral</strong> delivery</span>
+        `;
+        document.querySelector('.TotalPrice').appendChild(carNeut);
+
+        let confirme = document.createElement('button');
+        confirme.classList.add('confirme');
+        confirme.innerHTML = `
+            <span>Confirm Order</span>
+        `;
+        document.querySelector('.TotalPrice').appendChild(confirme);
+    }
+
+    cartTotal.innerHTML = `
+        <span>Order Total</span>
+        <span class="TotalNumber">$${totalNumber.toFixed(2)}</span>
+    `;
 }
