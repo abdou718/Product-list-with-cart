@@ -221,10 +221,46 @@ function updateTotalNumber() {
             <span>Confirm Order</span>
         `;
         document.querySelector('.TotalPrice').appendChild(confirme);
+
+        confirme.addEventListener('click', () => {
+            const cartItems = document.querySelectorAll('.cart-item');
+            const desserts = Array.from(cartItems).map(cartItem => {
+                const name = cartItem.querySelector('.cart-item__name').textContent;
+                const quantity = cartItem.querySelector('.cart-item__quantity').textContent.replace('x', '');
+                const price = cartItem.querySelector('.cart-item__price').textContent.replace('$', '');
+                const total = cartItem.querySelector('.cart-item__total').textContent.replace('$', '');
+                return { name, quantity, price, total };
+            });
+            orderconfirmed(desserts);
+        });
     }
 
     cartTotal.innerHTML = `
         <span>Order Total</span>
         <span class="TotalNumber">$${totalNumber.toFixed(2)}</span>
     `;
+}
+
+function orderconfirmed(desserts) {
+    const orderconfirmed = document.querySelector('.OrderConfimed');
+    orderconfirmed.innerHTML = `
+        <img src="/product list with cart/assets/images/icon-order-confirmed.svg" alt="order-confirmed" id="order-confirmed">
+        <span class="Orderconfirme-title">Order Confirmed</span>
+        <span class="thanks">We hope you enjoy your food</span>
+        <div class="order-confirmed-list"></div>
+    `;
+    const orderconfirmedList = document.querySelector('.order-confirmed-list');
+    desserts.forEach(dessert => {
+        const item = document.createElement('div');
+        item.classList.add('item');
+        item.innerHTML = `
+            <span class="cart-item__name">${dessert.name}</span>
+            <span class="cart-item__quantity">x${dessert.quantity}</span>
+            <span class="cart-item__price">$${dessert.price}</span>
+            <span class="cart-item__total">$${dessert.total}</span>
+        `;
+        orderconfirmedList.appendChild(item);
+    });
+    
+
 }
