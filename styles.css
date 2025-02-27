@@ -32,7 +32,7 @@ body{
 h1{
     text-align: start;
     font-weight: 700;
-    font-size: 5ram;
+    font-size: 3rem;
 }
 .items{
     display: flex;
@@ -200,3 +200,167 @@ h1{
     margin-bottom: 1rem;
 }
 
+.cart-item {
+    display:flex;
+    flex-direction:row;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid rgba(0,0 , 0,  0.08);
+}
+.cart-details{
+    display: block;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+.cart-item__name {
+    display:flex;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--Rose900);
+    margin-bottom: 0.7rem;
+}
+.item-detail{
+    display: flex;
+}
+.cart-item__quantity,
+.cart-item__price,
+.cart-item__total {
+    display:flex;
+    align-items: center;
+
+    width: 50%;
+
+}
+.cart-item__quantity{
+    color: var(--Red);
+
+}
+.cart-item__price{
+    color: var(--Rose300);
+}
+.cart-item__total{
+    color: var(--Rose900);
+}
+.cart-delete {
+    display:flex;
+    position: relative;
+    top: 1rem;
+    justify-content: center;
+    align-items: center;
+    width: 1.1rem;
+    height: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.2rem;
+    border-radius: 50%;
+    border: 1px solid var(--Rose300);
+    cursor: pointer;
+}
+.cart-delete img {
+    width: 50%;
+    width: 0.7rem;
+    height: 0.7rem;
+    cursor: pointer;
+}
+
+.cart-delete:hover {
+    filter: brightness(0) saturate(100%) invert(16%) sepia(99%) saturate(7405%) hue-rotate(359deg) brightness(99%) contrast(118%);
+}
+.cart-item__name{
+
+}
+.cartTotal{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 1rem;
+    color: var(--Rose900);
+    font-weight: 600;
+}
+
+.TotalNumber{
+    color: var(--Rose900);
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+.carNeut{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--Rose100);
+    padding: 1rem;
+    border-radius: 12px;
+}
+.confirme{
+    background-color: var(--Red);
+    color: var(--Rose50);
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 4rem;
+    margin:1rem 0;
+    font-weight: 700;
+    font-size: 1rem;
+    border-color: transparent;
+    cursor: pointer;
+}
+/* Overlay Modal Styles */
+.OrderConfimed {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    max-width: 90%;
+    background-color: #fff;
+    color: var(--Rose900);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    display: none;  /* Hidden by default */
+  }
+  
+  /* Optional Close Button Style */
+  .OrderConfimed .close-order {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  
+  /* Backdrop overlay (optional for darkening background) */
+  .overlay-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 50;
+    display: none;
+  }
+  
+  /* When the order modal is active, add a class to the body to blur background */
+  body.order-active .main-content {
+    filter: blur(5px);
+    opacity: 0.7;
+    pointer-events: none; /* Prevent interactions with the blurred content */
+  }
+  
+  /* Optional fade-in animation for modal */
+  .OrderConfimed.show {
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, -60%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+  }
+  
