@@ -261,6 +261,9 @@ function orderconfirmed(desserts) {
         `;
         orderconfirmedList.appendChild(item);
     });
-    
+
+    orderconfirmed.style.display = 'flex';
+    orderconfirmed.classList.add('show');
+    document.body.classList.add('order-active');
 
 }
